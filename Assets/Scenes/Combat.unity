@@ -246,6 +246,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11b653f30a5711141988521e44c2df07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  Player_Anim: {fileID: 319509389}
+  pause: 0
 --- !u!1 &564418988
 GameObject:
   m_ObjectHideFlags: 0
@@ -256,7 +258,7 @@ GameObject:
   m_Component:
   - component: {fileID: 564418989}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Player_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -778,7 +780,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1763194097}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Enemy_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
