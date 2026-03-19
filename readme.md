@@ -48,8 +48,8 @@ _[Describe what the game/simulation is, its purpose, and any relevant context]_
 ## Developer Notes
 
 ### Branching Strategy
-- `main` — stable, production-ready only. Never commit directly.
-- `[name]-[feature]` — one branch per feature, one developer per branch.
+- `main` - stable, production-ready only. Never commit directly.
+- `[name]-[feature]` - one branch per feature, one developer per branch.
 
 ### Workflow Before Opening a PR
 1. Fetch latest main
@@ -71,21 +71,21 @@ _[Describe what the game/simulation is, its purpose, and any relevant context]_
 5. Open a PR on GitHub
 
 ### Merging
-- PRs use **squash merge only** — one clean commit per feature on main.
+- PRs use **squash merge only**  one clean commit per feature on main.
 - Delete your branch after merge.
  
 ### GitHub Authentication (HTTPS)
-This repo uses HTTPS for remote auth. You will need a **Personal Access Token (PAT)** — GitHub no longer accepts account passwords over HTTPS.
+This repo uses HTTPS for remote auth. You will need a **Personal Access Token (PAT)** - GitHub no longer accepts account passwords over HTTPS.
  
 **One-time setup:**
 1. Go to GitHub -> Settings -> Developer Settings -> Personal Access Tokens -> Tokens (classic)
 2. Click **Generate new token**, give it a name, and check only the **`repo`** scope
-3. Copy the token — you won't be able to see it again
+3. Copy the token - you won't be able to see it again
 4. In your terminal, set git to store credentials permanently:
    ```bash
    git config --global credential.helper store
    ```
-5. Do a `git push` — when prompted, enter your **GitHub username** and paste the **PAT as the password**
+5. Do a `git push` - when prompted, enter your **GitHub username** and paste the **PAT as the password**
 6. Git will store it and never ask again on this machine
  
 **If you need to update or reset stored credentials:**
