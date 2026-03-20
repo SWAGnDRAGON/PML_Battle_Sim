@@ -3,6 +3,8 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
@@ -20,6 +22,38 @@ public class PlayerController : MonoBehaviour
 
     //Bool for pause demo
     public bool pause = false;
+
+    //Attack Button reference
+    public Button attackButton;
+
+    public Transform buttonOptions;
+
+    //Attack Action event
+    private UnityAction attackAction;
+
+    void Start()
+    {
+        attackAction += toggleButtonUI;
+        attackAction += attack;
+
+        attackButton.onClick.AddListener(attackAction);
+    }
+
+    void toggleButtonUI()
+    {
+        //attackButton.gameObject.SetActive(false);
+        foreach(Transform button in buttonOptions)
+        {
+            button.gameObject.SetActive(!button.gameObject.activeSelf);
+        }
+    }
+
+    void attack()
+    {
+        MoveCharacterSetDistance(enemyT.position);
+        Player_Anim.SetBool("IsDashing", !Player_Anim.GetBool("IsDashing"));
+        Player_Anim.SetBool("IsAttacking", !Player_Anim.GetBool("IsAttacking"));
+    }
 
     void Update()
     {
