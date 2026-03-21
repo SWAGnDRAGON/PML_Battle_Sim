@@ -20,62 +20,69 @@ public class PlayerController : MonoBehaviour
     //Enemy transform reference
     public Transform enemyT;
 
-    //Bool for pause demo
-    public bool pause = false;
-
     //Attack Button reference
     public Button attackButton;
 
+    //Parent object reference for Button UI
     public Transform buttonOptions;
+
+    //Active Attack frame handler 
+    bool activeAttackable = false;
+
+    //Active Attack Input handler
+    bool activeAttackInputFlag = false;
 
     //Attack Action event
     private UnityAction attackAction;
 
     void Start()
     {
-        attackAction += toggleButtonUI;
-        attackAction += attack;
+        attackAction += ToggleButtonUI;
+        attackAction += Attack;
 
         attackButton.onClick.AddListener(attackAction);
     }
-
-    void toggleButtonUI()
+    void FixedUpdate()
     {
-        //attackButton.gameObject.SetActive(false);
+        if (activeAttackable && activeAttackInputFlag == false)
+        {
+            if (InputSystem.actions["Interact"].IsPressed())
+            {
+                Debug.Log("Active Attack: SUCCESS");
+                DisableActiveAttackWindow();
+                activeAttackInputFlag = true;
+            }
+        }
+        else if (!activeAttackable && activeAttackInputFlag == false)
+        {
+            if (InputSystem.actions["Interact"].IsPressed())
+            {
+                Debug.Log("Active Attack: FAILURE");
+                activeAttackInputFlag = true;
+                Player_Anim.SetBool("IsAttacking", !Player_Anim.GetBool("IsAttacking"));
+            }
+        }
+    }
+
+    /// <summary>
+    /// Toggles parent Button UI object activeSelf
+    /// </summary>
+    void ToggleButtonUI()
+    {
         foreach(Transform button in buttonOptions)
         {
             button.gameObject.SetActive(!button.gameObject.activeSelf);
         }
     }
 
-    void attack()
+    /// <summary>
+    /// Trigger attack animation, only called by UnityAction attackAction
+    /// </summary>
+    void Attack()
     {
         MoveCharacterSetDistance(enemyT.position);
         Player_Anim.SetBool("IsDashing", !Player_Anim.GetBool("IsDashing"));
         Player_Anim.SetBool("IsAttacking", !Player_Anim.GetBool("IsAttacking"));
-    }
-
-    void Update()
-    {
-        if (InputSystem.actions["Jump"].WasPressedThisFrame())
-        {
-            pause = !pause;
-            if(pause)
-            {
-                Player_Anim.speed = 0f;
-            }
-            else
-            {
-                Player_Anim.speed = 1f;
-            }
-        }
-
-        if (InputSystem.actions["Interact"].WasPressedThisFrame())
-        {
-            MoveCharacterSetDistance(enemyT.position);
-            Player_Anim.SetBool("IsDashing", !Player_Anim.GetBool("IsDashing"));
-            Player_Anim.SetBool("IsAttacking", !Player_Anim.GetBool("IsAttacking"));
-        }
     }
 
     /// <summary>
@@ -105,5 +112,22 @@ public class PlayerController : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
             yield return null;
         }
+        //Trigger attack animation transition upon reaching the target
+    }
+
+    public void EnableActiveAttackWindow()
+    {
+        if(activeAttackInputFlag == false)
+            activeAttackable = true;
+    }
+
+    public void DisableActiveAttackWindow()
+    {
+        activeAttackable = false;
+    }
+
+    public void ResetActiveAttackInputFlag()
+    {
+        activeAttackInputFlag = false;
     }
 }
