@@ -15,10 +15,13 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 10f;
 
     //Safe overlap distance
-    public float distanceBuffer = 0.5f;
+    public float distanceBuffer = 0.4f;
 
     //Enemy transform reference
     public Transform enemyT;
+
+    //Player Start transform reference
+    public Transform startT;
 
     //Attack Button reference
     public Button attackButton;
@@ -37,6 +40,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        //Initialize Attack Button
         attackAction += ToggleButtonUI;
         attackAction += Attack;
 
@@ -49,7 +53,6 @@ public class PlayerController : MonoBehaviour
             if (InputSystem.actions["Interact"].IsPressed())
             {
                 Debug.Log("Active Attack: SUCCESS");
-                DisableActiveAttackWindow();
                 activeAttackInputFlag = true;
             }
         }
@@ -59,7 +62,6 @@ public class PlayerController : MonoBehaviour
             {
                 Debug.Log("Active Attack: FAILURE");
                 activeAttackInputFlag = true;
-                Player_Anim.SetBool("IsAttacking", !Player_Anim.GetBool("IsAttacking"));
             }
         }
     }
@@ -81,8 +83,7 @@ public class PlayerController : MonoBehaviour
     void Attack()
     {
         MoveCharacterSetDistance(enemyT.position);
-        Player_Anim.SetBool("IsDashing", !Player_Anim.GetBool("IsDashing"));
-        Player_Anim.SetBool("IsAttacking", !Player_Anim.GetBool("IsAttacking"));
+        Player_Anim.SetBool("IsAttacking", true);
     }
 
     /// <summary>
@@ -112,22 +113,39 @@ public class PlayerController : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
             yield return null;
         }
-        //Trigger attack animation transition upon reaching the target
+        Player_Anim.SetBool("ResetPos", false);
     }
 
+    /// <summary>
+    /// Animation Event function, begins Active Attack window
+    /// </summary>
     public void EnableActiveAttackWindow()
     {
         if(activeAttackInputFlag == false)
             activeAttackable = true;
     }
 
+    /// <summary>
+    /// Animation Event function, ends Active Attack window
+    /// </summary>
     public void DisableActiveAttackWindow()
     {
         activeAttackable = false;
+        if(activeAttackInputFlag == false)
+        {
+            Debug.Log("Active Attack: FAILURE BY DEFAULT");
+        }
+        Player_Anim.SetBool("IsAttacking", false);
     }
 
     public void ResetActiveAttackInputFlag()
     {
         activeAttackInputFlag = false;
+        if(Player_Anim.GetBool("IsAttacking") == false)
+        {
+            Player_Anim.SetBool("ResetPos", true);
+            MoveCharacterSetDistance(startT.position);
+            ToggleButtonUI();
+        }
     }
 }
