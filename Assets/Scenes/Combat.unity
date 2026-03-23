@@ -249,8 +249,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   Player_Anim: {fileID: 319509389}
   moveSpeed: 10
-  distanceBuffer: 0.5
+  distanceBuffer: 0.4
   enemyT: {fileID: 1763194097}
+  startT: {fileID: 564418989}
   attackButton: {fileID: 470687936}
   buttonOptions: {fileID: 1052703200}
 --- !u!114 &319509391
