@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 319509389}
   - component: {fileID: 319509390}
   - component: {fileID: 319509391}
+  - component: {fileID: 319509392}
   m_Layer: 0
   m_Name: Player_Anim
   m_TagString: Untagged
@@ -247,6 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11b653f30a5711141988521e44c2df07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  playerHandler: {fileID: 319509392}
   Player_Anim: {fileID: 319509389}
   moveSpeed: 10
   distanceBuffer: 0.4
@@ -266,6 +268,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d783d37362ca68842b0c11fb6dc34695, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+--- !u!114 &319509392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319509386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb096c97de8a4b3499a3e1c095a70533, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHandler
+  characterName: Hero
+  maxHealth: 21
+  currentHealth: 21
+  attack: 10
+  defense: 1
 --- !u!1 &391736914 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3251642800405683551, guid: 05e59eae7cacdae489c1b1b0e980a843, type: 3}
@@ -334,7 +353,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 564418989}
-  - component: {fileID: 564418990}
   m_Layer: 0
   m_Name: Player_Parent
   m_TagString: Untagged
@@ -358,23 +376,6 @@ Transform:
   - {fileID: 319509388}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &564418990
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 564418988}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb096c97de8a4b3499a3e1c095a70533, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerHandler
-  characterName: 
-  maxHealth: 0
-  currentHealth: 0
-  attack: 0
-  defense: 0
 --- !u!1 &645807310
 GameObject:
   m_ObjectHideFlags: 0
@@ -1754,6 +1755,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1173443668
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1173443670}
+  - component: {fileID: 1173443669}
+  m_Layer: 0
+  m_Name: DmgNumberSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1173443669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173443668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00c5379570993cc4b879cd5c48b3b3b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FloatingNumberSpawner
+  prefab: {fileID: 309963930579155394, guid: 0c589b87d9b792446a12e66fcc21d534, type: 3}
+--- !u!4 &1173443670
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173443668}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1050.2709, y: 65.30232, z: -33.2199}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1264983216
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2396,3 +2442,4 @@ SceneRoots:
   - {fileID: 1869713282}
   - {fileID: 658059547}
   - {fileID: 807331772}
+  - {fileID: 1173443670}

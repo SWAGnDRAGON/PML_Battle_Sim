@@ -5,9 +5,14 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using static StaticData;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
+    //Player Properties reference
+    public PlayerHandler playerHandler;
+
     //Animator component reference
     public Animator Player_Anim;
 
@@ -35,8 +40,13 @@ public class PlayerController : MonoBehaviour
     //Active Attack Input handler
     bool activeAttackInputFlag = false;
 
+    //Active Attack Success handler
+    bool activeAttackSuccessFlag = false;
+
     //Attack Action event
     private UnityAction attackAction;
+
+
 
     void Start()
     {
@@ -54,6 +64,7 @@ public class PlayerController : MonoBehaviour
             {
                 Debug.Log("Active Attack: SUCCESS");
                 activeAttackInputFlag = true;
+                activeAttackSuccessFlag = true;
             }
         }
         else if (!activeAttackable && activeAttackInputFlag == false)
@@ -141,11 +152,27 @@ public class PlayerController : MonoBehaviour
     public void ResetActiveAttackInputFlag()
     {
         activeAttackInputFlag = false;
+        activeAttackSuccessFlag = false;
         if(Player_Anim.GetBool("IsAttacking") == false)
         {
             Player_Anim.SetBool("ResetPos", true);
             MoveCharacterSetDistance(startT.position);
             ToggleButtonUI();
         }
+    }
+
+    public void DamageNumberTest()
+    {
+        
+        Array dmgTypes = Enum.GetValues(typeof(DamageType));
+
+
+        if (activeAttackSuccessFlag == true)
+        {
+            FloatingNumberSpawner.Spawn(playerHandler.attack*2, enemyT.position, false, "physical", true);
+        }
+        else
+        FloatingNumberSpawner.Spawn(playerHandler.attack, enemyT.position, false, "physical");
+
     }
 }
