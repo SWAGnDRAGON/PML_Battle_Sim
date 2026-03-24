@@ -5,7 +5,6 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.Events;
-using static StaticData;
 using System;
 
 public class PlayerController : MonoBehaviour
@@ -46,8 +45,6 @@ public class PlayerController : MonoBehaviour
     //Attack Action event
     private UnityAction attackAction;
 
-
-
     void Start()
     {
         //Initialize Attack Button
@@ -58,20 +55,18 @@ public class PlayerController : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (activeAttackable && activeAttackInputFlag == false)
+        if (activeAttackable && activeAttackInputFlag == false && Player_Anim.GetBool("IsAttacking"))
         {
             if (InputSystem.actions["Interact"].IsPressed())
             {
-                Debug.Log("Active Attack: SUCCESS");
                 activeAttackInputFlag = true;
                 activeAttackSuccessFlag = true;
             }
         }
-        else if (!activeAttackable && activeAttackInputFlag == false)
+        else if (!activeAttackable && activeAttackInputFlag == false && Player_Anim.GetBool("IsAttacking"))
         {
             if (InputSystem.actions["Interact"].IsPressed())
             {
-                Debug.Log("Active Attack: FAILURE");
                 activeAttackInputFlag = true;
             }
         }
@@ -80,7 +75,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Toggles parent Button UI object activeSelf
     /// </summary>
-    void ToggleButtonUI()
+    public void ToggleButtonUI()
     {
         foreach(Transform button in buttonOptions)
         {
@@ -91,7 +86,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Trigger attack animation, only called by UnityAction attackAction
     /// </summary>
-    void Attack()
+    public void Attack()
     {
         MoveCharacterSetDistance(enemyT.position);
         Player_Anim.SetBool("IsAttacking", true);
@@ -142,13 +137,12 @@ public class PlayerController : MonoBehaviour
     public void DisableActiveAttackWindow()
     {
         activeAttackable = false;
-        if(activeAttackInputFlag == false)
-        {
-            Debug.Log("Active Attack: FAILURE BY DEFAULT");
-        }
         Player_Anim.SetBool("IsAttacking", false);
     }
 
+    /// <summary>
+    /// Animation Event function, Reset Active Attack Flags and Send Player back to start position.
+    /// </summary>
     public void ResetActiveAttackInputFlag()
     {
         activeAttackInputFlag = false;
@@ -157,16 +151,26 @@ public class PlayerController : MonoBehaviour
         {
             Player_Anim.SetBool("ResetPos", true);
             MoveCharacterSetDistance(startT.position);
-            ToggleButtonUI();
         }
     }
 
+    /// <summary>
+    /// Animation Event function, toggles UI buttons back on after Player Idle begins
+    /// </summary>
+    public void ToggleUIButtonsOn()
+    {
+        foreach (Transform button in buttonOptions)
+        {
+            if(button.gameObject.activeSelf == false)
+                button.gameObject.SetActive(true);
+        }
+    }
+
+    /// <summary>
+    /// Animation Event function, Spawns damage number
+    /// </summary>
     public void DamageNumberTest()
     {
-        
-        Array dmgTypes = Enum.GetValues(typeof(DamageType));
-
-
         if (activeAttackSuccessFlag == true)
         {
             FloatingNumberSpawner.Spawn(playerHandler.attack*2, enemyT.position, false, "physical", true);
