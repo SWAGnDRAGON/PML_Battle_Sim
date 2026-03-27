@@ -100,3 +100,4 @@ InitTestScene*.unity*
 
 # Dont accidentally push private SSH keys
 githubssh
+Assets/TextMesh Pro/Fonts & Materials/Heading-Fuun.asset

@@ -105,6 +105,14 @@ public class PlayerController : CharacterController
     }
 
     /// <summary>
+    /// Animation Event function, Resets ResetPos to false during upon returning to Idle
+    /// </summary>
+    public void ResetPosToFalse()
+    {
+        anim.SetBool("ResetPos", false);
+    }
+
+    /// <summary>
     /// Animation Event function, toggles UI buttons back on after Player Idle begins
     /// </summary>
     public void ToggleUIButtonsOn()
@@ -127,6 +135,13 @@ public class PlayerController : CharacterController
         }
         else
         FloatingNumberSpawner.Spawn(playerHandler.attack, targetT.position, false, "physical");
+    }
 
+    /// <summary>
+    /// Animation Event function, triggers turn change.
+    /// </summary>
+    public void NextTurn()
+    {
+        battleManager.NextTurn();
     }
 }

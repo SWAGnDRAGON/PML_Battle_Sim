@@ -9,6 +9,9 @@ using System;
 
 public class CharacterController : MonoBehaviour
 {
+    //Battle Manager reference
+    public BattleManager battleManager;
+
     //Animator component reference
     public Animator anim;
 
@@ -100,4 +103,6 @@ public class CharacterController : MonoBehaviour
     {
         FloatingNumberSpawner.Spawn(1, targetT.position, false, "physical");
     }
+
+    
 }

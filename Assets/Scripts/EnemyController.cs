@@ -9,8 +9,11 @@ using System;
 
 public class EnemyController : CharacterController
 {
-    //Player Properties reference
+    //Enemy Properties reference
     public EnemyHandler enemyHandler;
+
+    //Player Properties reference
+    public PlayerHandler playerHandler;
 
     //Attack event
     public UnityEvent attackEvent;
@@ -18,9 +21,11 @@ public class EnemyController : CharacterController
     //Attack Action event
     private UnityAction attackAction;
 
+    bool canAttack = true;
+
     void Start()
     {
-        //Initialize Attack Button
+        //Initialize Attack functionality
         attackAction += Attack;
 
         attackEvent.AddListener(attackAction);
@@ -28,8 +33,9 @@ public class EnemyController : CharacterController
 
     void FixedUpdate()
     {
-        if(InputSystem.actions["Jump"].IsPressed())
+        if(this.battleManager.turnOrderList.Peek() == this.gameObject && canAttack)
         {
+            canAttack = false;
             attackEvent.Invoke();
         }
     }
@@ -58,6 +64,12 @@ public class EnemyController : CharacterController
     public override void DamageNumberTest()
     {
         FloatingNumberSpawner.Spawn(enemyHandler.attack, targetT.position, false, "physical", false);
-        
+        playerHandler.currentHealth -= (enemyHandler.attack - playerHandler.defense);
+    }
+
+    public void NextTurn()
+    {
+        battleManager.NextTurn();
+        canAttack = true;
     }
 }
