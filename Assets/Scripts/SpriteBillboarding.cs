@@ -9,6 +9,7 @@ public class SpriteBillboarding : MonoBehaviour
     void Start()
     {
         mainCam = Camera.main;
+        transform.rotation = Quaternion.Euler(0f, mainCam.transform.rotation.eulerAngles.y, 0f);
     }
 
     // Update is called once per frame
@@ -17,7 +18,7 @@ public class SpriteBillboarding : MonoBehaviour
         if (mainCam != null)
         {
             // Create a rotation that only considers the camera's Y rotation
-            transform.rotation = Quaternion.Euler(0f, mainCam.transform.rotation.eulerAngles.y, 0f);
+            //transform.rotation = Quaternion.Euler(0f, mainCam.transform.rotation.eulerAngles.y, 0f);
         }
     }
 }
