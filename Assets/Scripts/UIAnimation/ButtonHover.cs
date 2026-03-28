@@ -4,15 +4,24 @@ using System.Collections;
 
 public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
+
+    public AudioClip buttonHoverSound;
+    public AudioClip buttonClickSound;
     private Vector3 normalScale = Vector3.one;
     private Vector3 hoverScale = new Vector3(1.08f, 1.08f, 1f);
     private Vector3 pressedScale = new Vector3(0.95f, 0.95f, 1f);
+    private AudioSource _btnAudioSrc;
+    private Coroutine _scaleCoroutine;
 
-    private Coroutine scaleCoroutine;
+    public void Awake()
+    {
+        _btnAudioSrc = GetComponent<AudioSource>();
+    }
 
     public void OnPointerEnter(PointerEventData e)
     {
         ScaleTo(hoverScale, 0.1f);
+        _btnAudioSrc.PlayOneShot(buttonHoverSound);
     }
 
     public void OnPointerExit(PointerEventData e)
@@ -23,6 +32,7 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void OnPointerDown(PointerEventData e)
     {
         ScaleTo(pressedScale, 0.05f);
+         _btnAudioSrc.PlayOneShot(buttonClickSound);
     }
 
     public void OnPointerUp(PointerEventData e)
@@ -32,8 +42,8 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     private void ScaleTo(Vector3 target, float duration)
     {
-        if (scaleCoroutine != null) StopCoroutine(scaleCoroutine);
-        scaleCoroutine = StartCoroutine(ScaleCoroutine(target, duration));
+        if (_scaleCoroutine != null) StopCoroutine(_scaleCoroutine);
+        _scaleCoroutine = StartCoroutine(ScaleCoroutine(target, duration));
     }
 
     private IEnumerator ScaleCoroutine(Vector3 target, float duration)
