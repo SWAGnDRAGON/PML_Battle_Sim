@@ -15,12 +15,25 @@ public class EnemyController : CharacterController
     //Player Properties reference
     public PlayerHandler playerHandler;
 
+    //Enemy Animator reference
+    public Animator Enemy_Anim;
+
     //Attack event
     public UnityEvent attackEvent;
 
     //Attack Action event
     private UnityAction attackAction;
 
+    //Attack Parry frame handler 
+    bool isParryable = false;
+
+    //Attack Parry Input handler
+    bool parryInputFlag = false;
+
+    //Attack Parry Success handler
+    bool parrySuccessFlag = false;
+
+    //Enemy Attack Handler
     bool canAttack = true;
 
     void Start()
@@ -33,12 +46,49 @@ public class EnemyController : CharacterController
 
     void FixedUpdate()
     {
+        //Checks if its the Enemy Turn
         if(this.battleManager.turnOrderList.Peek() == this.gameObject && canAttack)
         {
             canAttack = false;
             attackEvent.Invoke();
         }
+
+        //Parry Window Logic
+        if (isParryable && parryInputFlag == false && Enemy_Anim.GetBool("IsAttacking"))
+        {
+            if (InputSystem.actions["Interact"].IsPressed())
+            {
+                parryInputFlag = true;
+                parrySuccessFlag = true;
+            }
+        }
+        else if (!isParryable && parryInputFlag == false && Enemy_Anim.GetBool("IsAttacking"))
+        {
+            if (InputSystem.actions["Interact"].IsPressed())
+            {
+                parryInputFlag = true;
+            }
+        }
     }
+
+
+    /// <summary>
+    /// Animation Event function, begins Attack Parry window
+    /// </summary>
+    public void EnableParryWindow()
+    {
+        if (parryInputFlag == false)
+            isParryable = true;
+    }
+
+    /// <summary>
+    /// Animation Event function, ends Attack Parry window
+    /// </summary>
+    public void DisableParryWindow()
+    {
+        isParryable = false;
+    }
+
 
     /// <summary>
     /// Animation Event function, Resets ResetPos to false during upon returning to Idle
@@ -56,6 +106,10 @@ public class EnemyController : CharacterController
         anim.SetBool("IsAttacking", false);
         anim.SetBool("ResetPos", true);
         ReturnCharacterToStart(startT.position);
+
+        //Reset logic params
+        parryInputFlag = false;
+        parrySuccessFlag = false;
     }
 
     /// <summary>
@@ -63,10 +117,22 @@ public class EnemyController : CharacterController
     /// </summary>
     public override void DamageNumberTest()
     {
-        FloatingNumberSpawner.Spawn(enemyHandler.attack, targetT.position, false, "physical", false);
-        playerHandler.currentHealth -= (enemyHandler.attack - playerHandler.defense);
+        int dmg = enemyHandler.attack - playerHandler.defense;
+
+        if (parrySuccessFlag)
+        {
+            dmg = 0;
+            FloatingNumberSpawner.Spawn(dmg, targetT.position, false, "physical", true);
+        }
+        else
+            FloatingNumberSpawner.Spawn(dmg, targetT.position, false, "physical", false);
+
+        playerHandler.currentHealth -= dmg;
     }
 
+    /// <summary>
+    /// Triggers turn change
+    /// </summary>
     public void NextTurn()
     {
         battleManager.NextTurn();

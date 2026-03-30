@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 public class BattleManager : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class BattleManager : MonoBehaviour
 
     public CinemachineRotationComposer rotationComposer;
 
+    //Player turn handler
     public bool playerTurn = true;
 
     //Parent object reference for Button UI
@@ -35,6 +37,9 @@ public class BattleManager : MonoBehaviour
         FocusCameraOnCurrentTurnCharacter();
     }
 
+    /// <summary>
+    /// Triggers turn change
+    /// </summary>
     public void NextTurn()
     {
         //Add current turn character to back of queue
@@ -46,12 +51,13 @@ public class BattleManager : MonoBehaviour
         //Move camera focus to current turn character
         FocusCameraOnCurrentTurnCharacter();
 
+        //Set Player Turn Flag
         if (turnOrderList.Peek() == Player)
             playerTurn = true;
         else
             playerTurn = false;
 
-        //UI Handler
+        //UI/Cam Handler
         if (playerTurn)
         {
             ToggleUIButtonsOn();
@@ -68,7 +74,6 @@ public class BattleManager : MonoBehaviour
     void FocusCameraOnCurrentTurnCharacter()
     {
         cam.Follow = turnOrderList.Peek().transform;
-        //cam.LookAt = turnOrderList.Peek().transform;
     }
 
     /// <summary>

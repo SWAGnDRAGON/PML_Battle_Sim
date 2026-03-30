@@ -12,6 +12,9 @@ public class PlayerController : CharacterController
     //Player Properties reference
     public PlayerHandler playerHandler;
 
+    //Enemy Properties reference
+    public EnemyHandler enemyHandler;
+
     //Animator component reference
     public Animator Player_Anim;
 
@@ -44,6 +47,7 @@ public class PlayerController : CharacterController
 
     void FixedUpdate()
     {
+        //Active Attack Logic
         if (activeAttackable && activeAttackInputFlag == false && Player_Anim.GetBool("IsAttacking"))
         {
             if (InputSystem.actions["Interact"].IsPressed())
@@ -59,6 +63,7 @@ public class PlayerController : CharacterController
                 activeAttackInputFlag = true;
             }
         }
+
     }
 
     /// <summary>
@@ -129,12 +134,16 @@ public class PlayerController : CharacterController
     /// </summary>
     public override void DamageNumberTest()
     {
+        int dmg = playerHandler.attack - enemyHandler.defense;
         if (activeAttackSuccessFlag == true)
         {
-            FloatingNumberSpawner.Spawn(playerHandler.attack*2, targetT.position, false, "physical", true);
+            dmg *= 2;
+            FloatingNumberSpawner.Spawn(dmg, targetT.position, false, "physical", true);
         }
         else
-        FloatingNumberSpawner.Spawn(playerHandler.attack, targetT.position, false, "physical");
+            FloatingNumberSpawner.Spawn(dmg, targetT.position, false, "physical");
+
+        enemyHandler.currentHealth -= dmg;
     }
 
     /// <summary>

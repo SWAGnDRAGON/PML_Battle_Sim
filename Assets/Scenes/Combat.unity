@@ -551,6 +551,7 @@ MonoBehaviour:
   targetT: {fileID: 990421404}
   startT: {fileID: 564418989}
   playerHandler: {fileID: 319509392}
+  enemyHandler: {fileID: 990421407}
   Player_Anim: {fileID: 319509389}
   attackButton: {fileID: 470687936}
   buttonOptions: {fileID: 1052703200}
@@ -1719,6 +1720,7 @@ MonoBehaviour:
   startT: {fileID: 1763194097}
   enemyHandler: {fileID: 990421407}
   playerHandler: {fileID: 319509392}
+  Enemy_Anim: {fileID: 990421405}
   attackEvent:
     m_PersistentCalls:
       m_Calls: []
